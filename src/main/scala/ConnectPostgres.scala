@@ -1,5 +1,7 @@
 import org.apache.spark.sql.SparkSession
 
+import java.util.Properties
+
 object ConnectPostgres {
 
   def main(args: Array[String]): Unit = {
@@ -18,8 +20,17 @@ object ConnectPostgres {
       .option("password", "mypassword")
       .load()
 
-    jdbcDF.show()
+    val connectionProperties = new Properties()
+    connectionProperties.put("user", "vikram")
+    connectionProperties.put("password", "mypassword")
+    val jdbcDF2 = spark.read
+      .jdbc("jdbc:postgresql:apachedemo", "persons", connectionProperties)
 
+    jdbcDF2.show()
 
+    val jdbcDF3 = spark.read
+      .jdbc("jdbc:postgresql:apachedemo", "persons", connectionProperties)
+
+    jdbcDF3.show()
   }
 }
